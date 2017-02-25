@@ -9,77 +9,88 @@
 import UIKit
 import Messages
 
-/*
- While not strictly enforced, here are the file sizes that Apple recommends for sticker packs:
- - Small:  300 x 300 pixel image
- - Medium: 378 x 378 pixel image
- - Large:  618 x 618 pixel image
-*/
+/*    +-------------------------------------------------------------------------------------------------------+
+      |  NOTE: While not strictly enforced, here are the file sizes that Apple recommends for sticker packs:  |
+      |  - Small:  300 x 300 pixel image                                                                      |
+      |  - Medium: 378 x 378 pixel image                                                                      |
+      |  - Large:  618 x 618 pixel image                                                                      |
+      +-------------------------------------------------------------------------------------------------------+      */
+
+// -- MessagesViewController constants
+
+let packagesWidthCoefficient: CGFloat = 0.2
 
 class MessagesViewController: MSMessagesAppViewController, UIScrollViewDelegate {
     
-//    @IBOutlet weak var content: UIScrollView! // the scroll view of stickers of a specific package
-//    @IBOutlet weak var packages: UIScrollView! // the scroll view of sticker packages
-//    
-//    override func viewDidLoad() {
-//        super.viewDidLoad()
-//        StickerManager.packages = allPackages
-//    }
-//    
-//    override func viewWillAppear(_ animated: Bool) {
-//        super.viewWillAppear(animated)
-//        initialSetup()
-//    }
-//    
-//    private func initialSetup() {
-//        // render sticker buttons in packagesContainer
-//        
-////        let buttonOne = UIButton(type: .system)
-////        buttonOne.frame = CGRect(x: 10, y: 50, width: 50, height: 50)
-////        buttonOne.backgroundColor = UIColor.green
-////        buttonOne.setTitle("test", for: UIControlState.normal)
-////        buttonOne.addTarget(self, action: #selector(stickerPackageTapAction), for: UIControlEvents.touchUpInside)
-////        self.scrollView = UIScrollView()
-////        self.scrollView.delegate = self
-////        self.scrollView.contentSize = CGSize(width: 1000, height: 1000)
-////        containerView = UIView()
-////        containerView.addSubview(buttonOne)
-//    }
-//    
-//    @objc private func stickerPackageTapAction() {
-//        // render stickers in contentContainer
-//    }
+    private let packages = UIScrollView()
+    private let packagesContainer = UIView()
+    private let stickers = UIScrollView()
+    private let stickersContainer = UIView()
     
-// -----------------------------------------------------------------------------------------------
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setupPackages()
+        setupStickers()
+    }
     
-    var scrollView = UIScrollView()
-    var containerView = UIView()
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    private func setupPackages() {
+        packages.contentSize = packagesContentSize()
+        packagesContainer.backgroundColor = Colors.lavender
         
-        let buttonOne = UIButton(type: .system)
-        buttonOne.frame = CGRect(x: 10, y: 50, width: 50, height: 50)
-        buttonOne.backgroundColor = UIColor.green
-        buttonOne.setTitle("test", for: UIControlState.normal)
-        //            buttonOne.addTarget(self, action: "buttonAction1x1:", for: UIControlEvents.touchUpInside)
-        self.scrollView = UIScrollView()
-        self.scrollView.delegate = self
-        self.scrollView.contentSize = CGSize(width: 1000, height: 1000)
-        containerView = UIView()
-        containerView.addSubview(buttonOne)
-        scrollView.addSubview(containerView)
-        view.addSubview(scrollView)
+        for index in 0..<10 {
+            let packageButton = UIButton(type: .roundedRect)
+            packageButton.frame = CGRect(x: 10, y: 10 + index * (50 + 10), width: 50, height: 50)
+            packageButton.backgroundColor = UIColor.green
+            packageButton.setTitle("test", for: UIControlState.normal)
+            packageButton.tag = index
+            //            buttonOne.addTarget(self, action: "buttonAction1x1:", for: UIControlEvents.touchUpInside)
+            
+            packagesContainer.addSubview(packageButton)
+        }
+        packages.addSubview(packagesContainer)
+        view.addSubview(packages)
+    }
+    
+    private func setupStickers() {
+        stickers.contentSize = stickersContentSize()
+        stickersContainer.backgroundColor = Colors.lavenderblush
         
+//        let columns = 5
+        
+        for index in 0..<10 {
+            let stickerButton = UIButton(type: .roundedRect)
+            stickerButton.frame = CGRect(x: 10, y: 10 + index * (50 + 10), width: 50, height: 50)
+            stickerButton.backgroundColor = UIColor.gray
+            stickerButton.setTitle("test", for: UIControlState.normal)
+            stickerButton.tag = index
+            //            buttonOne.addTarget(self, action: "buttonAction1x1:", for: UIControlEvents.touchUpInside)
+            stickersContainer.addSubview(stickerButton)
+        }
+        stickers.addSubview(stickersContainer)
+        view.addSubview(stickers)
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        scrollView.frame = view.bounds
-        containerView.frame = CGRect(x: 0, y: 0, width: scrollView.contentSize.width, height: scrollView.contentSize.height)
+        // packages
+        let packagesSize = packagesContentSize()
+        packages.frame = CGRect(x: 0, y: 0, width: packagesSize.width, height: view.bounds.height)
+        packagesContainer.frame = CGRect(x: 0, y: 0, width: packagesSize.width, height: packagesSize.height)
+        // stickers
+        let stickersSize = stickersContentSize()
+        stickers.frame = CGRect(x: packages.frame.midX, y: 0, width: stickersSize.width, height: view.bounds.height)
+        stickersContainer.frame = CGRect(x: packages.frame.midX, y: 0, width: stickersSize.width, height: stickersSize.height)
+        print("TA: did layout, --st \(stickers.frame.maxX), --wd \(view.bounds.width)")
+        
     }
     
+    private func packagesContentSize() -> CGSize {
+        return CGSize(width: view.frame.width * packagesWidthCoefficient, height: 1000)
+    }
     
+    private func stickersContentSize() -> CGSize {
+        return CGSize(width: view.frame.width - packagesContentSize().width, height: 1000)
+    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

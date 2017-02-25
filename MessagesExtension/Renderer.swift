@@ -17,20 +17,20 @@ struct RGBColor {
 
 class Renderer {
     
-    public static func generateRandomImage(width: Int, height: Int) -> UIImage? {
-        let pixels = Renderer.randomPixelData(width: width, height: height)
-        return imageFromPixelData(pixels: pixels, width: width, height: height)
+    public static func generateRandomImage(size: CGSize) -> UIImage? {
+        let pixels = Renderer.randomPixelData(size: size)
+        return imageFromPixelData(pixels: pixels, size: size)
     }
     
-    public static func generateRandomImage(using colors: [UIColor], width: Int, height: Int) -> UIImage? {
-        let pixels = Renderer.randomPixelData(with: colors, width: width, height: height)
-        return imageFromPixelData(pixels: pixels, width: width, height: height)
+    public static func generateRandomImage(using colors: [UIColor], size: CGSize) -> UIImage? {
+        let pixels = Renderer.randomPixelData(with: colors, size: size)
+        return imageFromPixelData(pixels: pixels, size: size)
     }
     
     // generates random pixel data using only given colors
-    private static func randomPixelData(with colors: [UIColor], width: Int, height: Int) -> [RGBColor] {
+    private static func randomPixelData(with colors: [UIColor], size: CGSize) -> [RGBColor] {
         var data = [RGBColor]()
-        for _ in 0..<width * height {
+        for _ in 0..<Int(size.width * size.height) {
             let randomIndex = Int(arc4random()) % colors.count
             let cgFloatComponents = colors[randomIndex].cgColor.components
             var uint8Components = [UInt8]()
@@ -51,9 +51,9 @@ class Renderer {
     }
     
     // generates random pixel data using all colors
-    private static func randomPixelData(width: Int, height: Int) -> [RGBColor] {
+    private static func randomPixelData(size: CGSize) -> [RGBColor] {
         var data = [RGBColor]()
-        for _ in 0..<width * height {
+        for _ in 0..<Int(size.width * size.height) {
             let colorsNumber = UInt32(UInt8.max)
             let a = arc4random() % colorsNumber
             let r = arc4random() % colorsNumber
@@ -65,21 +65,21 @@ class Renderer {
         return data
     }
     
-    private static func imageFromPixelData(pixels: [RGBColor], width: Int, height: Int) -> UIImage? {
+    private static func imageFromPixelData(pixels: [RGBColor], size: CGSize) -> UIImage? {
         let rgbColorSpace = CGColorSpaceCreateDeviceRGB()
         let bitmapInfo:CGBitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.premultipliedFirst.rawValue)
         let bitsPerComponent = 8
         let bitsPerPixel = 32
-        assert(pixels.count == Int(width * height))
+        assert(pixels.count == Int(size.width * size.height))
         var data = pixels // to make it mutable
         let dataLength = data.count * MemoryLayout<RGBColor>.size
         let providerRef = CGDataProvider(data: NSData(bytes: &data, length: dataLength))
         let image = CGImage(
-            width: width,
-            height: height,
+            width: Int(size.width),
+            height: Int(size.height),
             bitsPerComponent: bitsPerComponent,
             bitsPerPixel: bitsPerPixel,
-            bytesPerRow: width * Int(MemoryLayout<RGBColor>.size),
+            bytesPerRow: Int(size.width) * Int(MemoryLayout<RGBColor>.size),
             space: rgbColorSpace,
             bitmapInfo: bitmapInfo,
             provider: providerRef!,
