@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3D1DE0671E5F0C7800768D97 /* Renderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D1DE0661E5F0C7800768D97 /* Renderer.swift */; };
+		3D1DE0691E5F3F9A00768D97 /* StickerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D1DE0681E5F3F9A00768D97 /* StickerManager.swift */; };
+		3D1DE06B1E5F43F600768D97 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D1DE06A1E5F43F600768D97 /* Constants.swift */; };
+		3D1DE06E1E5F465D00768D97 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D1DE06D1E5F465D00768D97 /* Colors.swift */; };
+		3D1DE0701E5F469A00768D97 /* RGBColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D1DE06F1E5F469A00768D97 /* RGBColor.swift */; };
 		3D2965AC1E5DC56C002E0481 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3D2965AB1E5DC56C002E0481 /* Assets.xcassets */; };
 		3D2965B31E5DC56C002E0481 /* MessagesExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 3D2965B21E5DC56C002E0481 /* MessagesExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		3D2965B81E5DC56C002E0481 /* Messages.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D2965B71E5DC56C002E0481 /* Messages.framework */; };
@@ -40,6 +45,11 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		3D1DE0661E5F0C7800768D97 /* Renderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Renderer.swift; sourceTree = "<group>"; };
+		3D1DE0681E5F3F9A00768D97 /* StickerManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StickerManager.swift; sourceTree = "<group>"; };
+		3D1DE06A1E5F43F600768D97 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		3D1DE06D1E5F465D00768D97 /* Colors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
+		3D1DE06F1E5F469A00768D97 /* RGBColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RGBColor.swift; sourceTree = "<group>"; };
 		3D2965A81E5DC56C002E0481 /* StickerTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StickerTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3D2965AB1E5DC56C002E0481 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3D2965AD1E5DC56C002E0481 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -63,11 +73,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3D1DE06C1E5F43FC00768D97 /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				3D2965BC1E5DC56C002E0481 /* MainInterface.storyboard */,
+				3D2965BF1E5DC56C002E0481 /* Assets.xcassets */,
+				3D2965C11E5DC56C002E0481 /* Info.plist */,
+			);
+			name = Base;
+			sourceTree = "<group>";
+		};
 		3D2965A11E5DC569002E0481 = {
 			isa = PBXGroup;
 			children = (
-				3D2965AA1E5DC56C002E0481 /* StickerTest */,
 				3D2965B91E5DC56C002E0481 /* MessagesExtension */,
+				3D2965AA1E5DC56C002E0481 /* StickerTest */,
 				3D2965B61E5DC56C002E0481 /* Frameworks */,
 				3D2965A91E5DC56C002E0481 /* Products */,
 			);
@@ -102,10 +122,13 @@
 		3D2965B91E5DC56C002E0481 /* MessagesExtension */ = {
 			isa = PBXGroup;
 			children = (
+				3D1DE06C1E5F43FC00768D97 /* Base */,
 				3D2965BA1E5DC56C002E0481 /* MessagesViewController.swift */,
-				3D2965BC1E5DC56C002E0481 /* MainInterface.storyboard */,
-				3D2965BF1E5DC56C002E0481 /* Assets.xcassets */,
-				3D2965C11E5DC56C002E0481 /* Info.plist */,
+				3D1DE0661E5F0C7800768D97 /* Renderer.swift */,
+				3D1DE0681E5F3F9A00768D97 /* StickerManager.swift */,
+				3D1DE06A1E5F43F600768D97 /* Constants.swift */,
+				3D1DE06D1E5F465D00768D97 /* Colors.swift */,
+				3D1DE06F1E5F469A00768D97 /* RGBColor.swift */,
 			);
 			path = MessagesExtension;
 			sourceTree = "<group>";
@@ -213,7 +236,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3D1DE0691E5F3F9A00768D97 /* StickerManager.swift in Sources */,
+				3D1DE06E1E5F465D00768D97 /* Colors.swift in Sources */,
+				3D1DE0671E5F0C7800768D97 /* Renderer.swift in Sources */,
+				3D1DE0701E5F469A00768D97 /* RGBColor.swift in Sources */,
 				3D2965BB1E5DC56C002E0481 /* MessagesViewController.swift in Sources */,
+				3D1DE06B1E5F43F600768D97 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -405,6 +433,7 @@
 				3D2965C61E5DC56C002E0481 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		3D2965C81E5DC56C002E0481 /* Build configuration list for PBXNativeTarget "StickerTest" */ = {
 			isa = XCConfigurationList;
@@ -413,6 +442,7 @@
 				3D2965CA1E5DC56C002E0481 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
