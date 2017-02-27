@@ -113,7 +113,11 @@ class MessagesViewController: MSMessagesAppViewController, UIScrollViewDelegate 
     }
     
     @objc private func stickerTapAction(sender: UITapGestureRecognizer) {
-        print("imagine i'm sending a sticker #\(sender.view?.tag)")
+        if let imageView = sender.view as? UIImageView {
+            if let image = imageView.image {
+                sendSticker(image)
+            }
+        }
     }
     
     @objc private func packageTapAction(sender: UITapGestureRecognizer) {
@@ -155,5 +159,23 @@ class MessagesViewController: MSMessagesAppViewController, UIScrollViewDelegate 
         return CGSize(width: 0, height: 0)
     }
     
+    
+    private func sendSticker(_ image: UIImage) {
+        if let conversation = activeConversation {
+            // layout
+            let layout = MSMessageTemplateLayout()
+            layout.image = image
+            // message
+            let message = MSMessage()
+            message.layout = layout
+            message.url = URL(string: "")
+            // insert in conversation
+            conversation.insert(message, completionHandler: { (error: Error?) in
+                if error != nil {
+                    print("Error: \(error)")
+                }
+            })
+        }
+    }
 }
 
