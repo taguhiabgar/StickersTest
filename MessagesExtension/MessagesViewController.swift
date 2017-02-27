@@ -22,130 +22,138 @@ let packagesWidthCoefficient: CGFloat = 0.2
 
 class MessagesViewController: MSMessagesAppViewController, UIScrollViewDelegate {
     
-    private let packages = UIScrollView()
-    private let packagesContainer = UIView()
-    private let stickers = UIScrollView()
-    private let stickersContainer = UIView()
+    // MARK: - Properties
+    
+    // Model
+    private var stickerPackages = [StickerPackage]()
+    private var chosenPackageIndex = 0 // NOTE: default index can de saved in user defaults // this shows index of a package that was chosen by user (default is 0)
+    // View
+    private let packagesView = UIScrollView()
+    private let packagesContainerView = UIView()
+    private let stickersView = UIScrollView()
+    private let stickersContainerView = UIView()
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        stickerPackages = StickerManager.shared.packages
+    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setupPackages()
         setupStickers()
+        updateFrames()
+    }
+    
+    // size of one package view
+    private func packageViewSize() -> CGSize {
+        let width = packagesView.frame.width
+        let height = width
+        return CGSize(width: width, height: height)
+    }
+    
+    // size of one sticker view
+    private func stickerViewSize() -> CGSize {
+        let width = stickersView.frame.width / CGFloat(Constants.stickersCountInRow)
+        let height = width
+        return CGSize(width: width, height: height)
     }
     
     private func setupPackages() {
-        packages.contentSize = packagesContentSize()
-        packagesContainer.backgroundColor = Colors.lavender
+        packagesView.contentSize = packagesContentSize()
+        packagesContainerView.backgroundColor = Colors.lavender
         
-        for index in 0..<10 {
-            let packageButton = UIButton(type: .roundedRect)
-            packageButton.frame = CGRect(x: 10, y: 10 + index * (50 + 10), width: 50, height: 50)
-            packageButton.backgroundColor = UIColor.green
-            packageButton.setTitle("test", for: UIControlState.normal)
-            packageButton.tag = index
-            //            buttonOne.addTarget(self, action: "buttonAction1x1:", for: UIControlEvents.touchUpInside)
-            
-            packagesContainer.addSubview(packageButton)
+        for index in 0..<stickerPackages.count {
+            let packageView = UIImageView(image: stickerPackages[index].thumbnail)
+            let size = packageViewSize()
+            let coefficient = CGFloat(Constants.packageWidthCoefficient)
+            let actualSize = CGSize(width: size.width * coefficient, height: size.height * coefficient)
+            let margin = (size.width - actualSize.width) / 2.0
+            packageView.frame = CGRect(x: margin, y: margin + CGFloat(index) * (actualSize.height + margin), width: actualSize.width, height: actualSize.height)
+            packageView.layer.cornerRadius = packageView.frame.width / 2.0
+            packageView.isUserInteractionEnabled = true
+            let gesture = UITapGestureRecognizer(target: self, action: #selector(packageTapAction(sender:)))
+            packageView.addGestureRecognizer(gesture)
+            packageView.tag = index
+            packagesContainerView.addSubview(packageView)
         }
-        packages.addSubview(packagesContainer)
-        view.addSubview(packages)
+        packagesView.addSubview(packagesContainerView)
+        view.addSubview(packagesView)
     }
     
     private func setupStickers() {
-        stickers.contentSize = stickersContentSize()
-        stickersContainer.backgroundColor = Colors.lavenderblush
+        // remove previous stickers
+        stickersContainerView.subviews.forEach({ $0.removeFromSuperview() })
         
-//        let columns = 5
+        stickersView.contentSize = stickersContentSize()
+        stickersContainerView.backgroundColor = Colors.lavenderblush
         
-        for index in 0..<10 {
-            let stickerButton = UIButton(type: .roundedRect)
-            stickerButton.frame = CGRect(x: 10, y: 10 + index * (50 + 10), width: 50, height: 50)
-            stickerButton.backgroundColor = UIColor.gray
-            stickerButton.setTitle("test", for: UIControlState.normal)
-            stickerButton.tag = index
-            //            buttonOne.addTarget(self, action: "buttonAction1x1:", for: UIControlEvents.touchUpInside)
-            stickersContainer.addSubview(stickerButton)
+        if chosenPackageIndex >= 0 && chosenPackageIndex < stickerPackages.count {
+            if let stickers = stickerPackages[chosenPackageIndex].stickers {
+                for index in 0..<stickers.count {
+                    let stickerView = UIImageView(image: stickers[index])
+                    let size = stickerViewSize()
+                    let coefficient = CGFloat(Constants.stickerWidthCoefficient)
+                    let actualStickerSize = CGSize(width: size.width * coefficient, height: size.height * coefficient)
+                    let margin = (size.width - actualStickerSize.width) / 2.0
+                    stickerView.frame = CGRect(x: margin + CGFloat(index % Constants.stickersCountInRow) * (actualStickerSize.width + margin), y: margin + CGFloat(index / Constants.stickersCountInRow) * (actualStickerSize.height + margin), width: actualStickerSize.width, height: actualStickerSize.height)
+                    stickerView.layer.cornerRadius = stickerView.frame.width / 2.0
+                    stickerView.isUserInteractionEnabled = true
+                    let gesture = UITapGestureRecognizer(target: self, action: #selector(stickerTapAction(sender:)))
+                    stickerView.addGestureRecognizer(gesture)
+                    stickerView.tag = index
+                    stickersContainerView.addSubview(stickerView)
+                }
+                stickersView.addSubview(stickersContainerView)
+                view.addSubview(stickersView)
+            }
+        } else {
+            print("TA: Index out of range")
         }
-        stickers.addSubview(stickersContainer)
-        view.addSubview(stickers)
+    }
+    
+    @objc private func stickerTapAction(sender: UITapGestureRecognizer) {
+        print("imagine i'm sending a sticker #\(sender.view?.tag)")
+    }
+    
+    @objc private func packageTapAction(sender: UITapGestureRecognizer) {
+        if let tag = sender.view?.tag {
+            chosenPackageIndex = tag
+            setupStickers()
+        }
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+        updateFrames()
+    }
+    
+    private func updateFrames() {
         // packages
         let packagesSize = packagesContentSize()
-        packages.frame = CGRect(x: 0, y: 0, width: packagesSize.width, height: view.bounds.height)
-        packagesContainer.frame = CGRect(x: 0, y: 0, width: packagesSize.width, height: packagesSize.height)
+        packagesView.frame = CGRect(x: 0, y: 0, width: packagesSize.width, height: view.bounds.height)
+        packagesContainerView.frame = CGRect(x: 0, y: 0, width: packagesSize.width, height: packagesSize.height)
         // stickers
         let stickersSize = stickersContentSize()
-        stickers.frame = CGRect(x: packages.frame.midX, y: 0, width: stickersSize.width, height: view.bounds.height)
-        stickersContainer.frame = CGRect(x: packages.frame.midX, y: 0, width: stickersSize.width, height: stickersSize.height)
-        print("TA: did layout, --st \(stickers.frame.maxX), --wd \(view.bounds.width)")
-        
+        stickersView.frame = CGRect(x: packagesView.frame.maxX, y: self.topLayoutGuide.length, width: stickersSize.width, height: view.bounds.height)
+        stickersContainerView.frame = CGRect(x: 0, y: 0, width: stickersSize.width, height: stickersSize.height)
     }
     
     private func packagesContentSize() -> CGSize {
-        return CGSize(width: view.frame.width * packagesWidthCoefficient, height: 1000)
+        let height = packageViewSize().height * CGFloat(stickerPackages.count)
+        return CGSize(width: view.frame.width * packagesWidthCoefficient, height: height)
     }
     
     private func stickersContentSize() -> CGSize {
-        return CGSize(width: view.frame.width - packagesContentSize().width, height: 1000)
+        if chosenPackageIndex >= 0 && chosenPackageIndex < stickerPackages.count {
+            let all = stickerPackages[chosenPackageIndex].stickers?.count
+            let col = Constants.stickersCountInRow
+            let count = (all! - 1) / col + 1
+            let height = stickerViewSize().height * CGFloat(count)
+            return CGSize(width: view.frame.width - packagesContentSize().width, height: height)
+        }
+        return CGSize(width: 0, height: 0)
     }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        print("TA: Memory warning")
-    }
-    
-// -----------------------------------------------------------------------------------------------
-    
-//    // MARK: - Conversation Handling
-//    
-//    override func willBecomeActive(with conversation: MSConversation) {
-//        // Called when the extension is about to move from the inactive to active state.
-//        // This will happen when the extension is about to present UI.
-//        
-//        // Use this method to configure the extension and restore previously stored state.
-//    }
-//    
-//    override func didResignActive(with conversation: MSConversation) {
-//        // Called when the extension is about to move from the active to inactive state.
-//        // This will happen when the user dissmises the extension, changes to a different
-//        // conversation or quits Messages.
-//        
-//        // Use this method to release shared resources, save user data, invalidate timers,
-//        // and store enough state information to restore your extension to its current state
-//        // in case it is terminated later.
-//    }
-//   
-//    override func didReceive(_ message: MSMessage, conversation: MSConversation) {
-//        // Called when a message arrives that was generated by another instance of this
-//        // extension on a remote device.
-//        
-//        // Use this method to trigger UI updates in response to the message.
-//    }
-//    
-//    override func didStartSending(_ message: MSMessage, conversation: MSConversation) {
-//        // Called when the user taps the send button.
-//    }
-//    
-//    override func didCancelSending(_ message: MSMessage, conversation: MSConversation) {
-//        // Called when the user deletes the message without sending it.
-//    
-//        // Use this to clean up state related to the deleted message.
-//    }
-//    
-//    override func willTransition(to presentationStyle: MSMessagesAppPresentationStyle) {
-//        // Called before the extension transitions to a new presentation style.
-//    
-//        // Use this method to prepare for the change in presentation style.
-//    }
-//    
-//    override func didTransition(to presentationStyle: MSMessagesAppPresentationStyle) {
-//        // Called after the extension transitions to a new presentation style.
-//    
-//        // Use this method to finalize any behaviors associated with the change in presentation style.
-//    }
     
 }
 

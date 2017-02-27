@@ -6,4 +6,11 @@
 //  Copyright © 2017 Taguhi Abgaryan. All rights reserved.
 //
 
-import Foundation
+import UIKit
+
+struct ColorCollection {
+    
+    let key: String
+    let mainColor: UIColor
+    let colors: [UIColor]
+}

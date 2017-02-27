@@ -8,17 +8,25 @@
 
 import UIKit
 
-let package1 = [
-    UIImage(),
-    UIImage(),
-]
-
-let package2 = [
-    UIImage(),
-    UIImage(),
-]
-
-let allPackages = [
-    StickerPackage(thumbnail: UIImage(), stickers: package1, name: "pack 1"),
-    StickerPackage(thumbnail: UIImage(), stickers: package2, name: "pack 2"),
-]
+class Constants {
+    // MARK: - Stickers
+    
+    // count in view
+    static let stickersCountInRow = 3
+    
+    // count in package
+    static let stickersMaxCount = 150
+    static let stickersMinCount = 10
+    
+    // size
+    static let stickerSize = CGSize(width: 2, height: 2) // image size in pixels
+    
+    // width
+    static let stickerWidthCoefficient = 0.8 // [sticker width] / [sticker view width]
+    
+    // MARK: - Packages
+    
+    // width
+    static let packageWidthCoefficient = 0.8 // [package width] / [packages scrollview width]
+    
+}

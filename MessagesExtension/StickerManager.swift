@@ -10,14 +10,68 @@ import UIKit
 
 class StickerManager {
     
-    static var packages = [StickerPackage]()
+    static let shared = StickerManager()
     
+    public var packages = [StickerPackage]()
+    
+    private init() {
+        setupPackages()
+    }
+    
+    // generates packages of stickers
+    private func setupPackages() {
+        let collections = [
+            Colors.allColorsCollection.colors,
+            Colors.redCollection.colors,
+            Colors.blueCollection.colors,
+            Colors.magentaCollection.colors,
+            Colors.cyanCollection.colors,
+            Colors.greenCollection.colors,
+            Colors.grayCollection.colors,
+            Colors.maroonCollection.colors,
+            Colors.pinkCollection.colors,
+            Colors.orangeCollection.colors,
+            Colors.whiteCollection.colors,
+            Colors.yellowCollection.colors,
+            Colors.purpleCollection.colors,
+            ]
+        let names = [
+            "All",
+            "Red",
+            "Blue",
+            "Magenta",
+            "Cyan",
+            "Green",
+            "Gray",
+            "Maroon",
+            "Pink",
+            "Orange",
+            "White",
+            "Yellow",
+            "Purple",
+            ]
+        // generate all packages
+        for index in 0..<collections.count {
+            var stickers = [UIImage]()
+            // decide count of stickers in current package
+            let count = Constants.stickersMinCount + Int(arc4random()) % (Constants.stickersMaxCount - Constants.stickersMinCount)
+            // generate stickers
+            for _ in 0..<count {
+                if let image = Renderer.generateRandomImage(using: collections[index], size: Constants.stickerSize) {
+                    stickers.append(image)
+                }
+            }
+            let thumbnail = Renderer.generateRandomImage(using: collections[index], size: Constants.stickerSize)
+            let package = StickerPackage(thumbnail: thumbnail!, stickers: stickers, name: names[index])
+            packages.append(package)
+        }
+    }
 }
 
 class StickerPackage {
     
-    let thumbnail: UIImage
-    let stickers: [UIImage]
+    let thumbnail: UIImage?
+    let stickers: [UIImage]?
     let name: String
     
     init(thumbnail: UIImage, stickers: [UIImage], name: String) {
