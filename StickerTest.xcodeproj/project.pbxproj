@@ -18,7 +18,10 @@
 		3D2965BB1E5DC56C002E0481 /* MessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D2965BA1E5DC56C002E0481 /* MessagesViewController.swift */; };
 		3D2965BE1E5DC56C002E0481 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3D2965BC1E5DC56C002E0481 /* MainInterface.storyboard */; };
 		3D2965C01E5DC56C002E0481 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3D2965BF1E5DC56C002E0481 /* Assets.xcassets */; };
-		3D7400181E64541F00216895 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D7400171E64541F00216895 /* Extensions.swift */; };
+		3D73C7D21E72CC8600C88122 /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D73C7D11E72CC8600C88122 /* UIImage.swift */; };
+		3D73C7D51E72CCEC00C88122 /* UIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D73C7D41E72CCEC00C88122 /* UIImageView.swift */; };
+		3D73C7D81E72D12700C88122 /* ColorPickerGIF.gif in Resources */ = {isa = PBXBuildFile; fileRef = 3D73C7D71E72D12700C88122 /* ColorPickerGIF.gif */; };
+		3D7400181E64541F00216895 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D7400171E64541F00216895 /* UIColor.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -60,7 +63,10 @@
 		3D2965BD1E5DC56C002E0481 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		3D2965BF1E5DC56C002E0481 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3D2965C11E5DC56C002E0481 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		3D7400171E64541F00216895 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		3D73C7D11E72CC8600C88122 /* UIImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
+		3D73C7D41E72CCEC00C88122 /* UIImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImageView.swift; sourceTree = "<group>"; };
+		3D73C7D71E72D12700C88122 /* ColorPickerGIF.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = ColorPickerGIF.gif; sourceTree = "<group>"; };
+		3D7400171E64541F00216895 /* UIColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -124,6 +130,8 @@
 		3D2965B91E5DC56C002E0481 /* MessagesExtension */ = {
 			isa = PBXGroup;
 			children = (
+				3D73C7D61E72D10900C88122 /* Gifs */,
+				3D73C7D31E72CCD400C88122 /* Extensions */,
 				3D1DE06C1E5F43FC00768D97 /* Base */,
 				3D2965BA1E5DC56C002E0481 /* MessagesViewController.swift */,
 				3D1DE0661E5F0C7800768D97 /* Renderer.swift */,
@@ -131,9 +139,26 @@
 				3D1DE06A1E5F43F600768D97 /* Constants.swift */,
 				3D1DE06D1E5F465D00768D97 /* Colors.swift */,
 				3D1DE06F1E5F469A00768D97 /* RGBColor.swift */,
-				3D7400171E64541F00216895 /* Extensions.swift */,
 			);
 			path = MessagesExtension;
+			sourceTree = "<group>";
+		};
+		3D73C7D31E72CCD400C88122 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				3D7400171E64541F00216895 /* UIColor.swift */,
+				3D73C7D11E72CC8600C88122 /* UIImage.swift */,
+				3D73C7D41E72CCEC00C88122 /* UIImageView.swift */,
+			);
+			name = Extensions;
+			sourceTree = "<group>";
+		};
+		3D73C7D61E72D10900C88122 /* Gifs */ = {
+			isa = PBXGroup;
+			children = (
+				3D73C7D71E72D12700C88122 /* ColorPickerGIF.gif */,
+			);
+			name = Gifs;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -228,6 +253,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3D2965C01E5DC56C002E0481 /* Assets.xcassets in Resources */,
+				3D73C7D81E72D12700C88122 /* ColorPickerGIF.gif in Resources */,
 				3D2965BE1E5DC56C002E0481 /* MainInterface.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -240,12 +266,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				3D1DE0691E5F3F9A00768D97 /* StickerManager.swift in Sources */,
+				3D73C7D51E72CCEC00C88122 /* UIImageView.swift in Sources */,
+				3D73C7D21E72CC8600C88122 /* UIImage.swift in Sources */,
 				3D1DE06E1E5F465D00768D97 /* Colors.swift in Sources */,
 				3D1DE0671E5F0C7800768D97 /* Renderer.swift in Sources */,
 				3D1DE0701E5F469A00768D97 /* RGBColor.swift in Sources */,
 				3D2965BB1E5DC56C002E0481 /* MessagesViewController.swift in Sources */,
 				3D1DE06B1E5F43F600768D97 /* Constants.swift in Sources */,
-				3D7400181E64541F00216895 /* Extensions.swift in Sources */,
+				3D7400181E64541F00216895 /* UIColor.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

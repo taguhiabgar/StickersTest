@@ -20,6 +20,11 @@ class StickerManager {
     
     // generates packages of stickers
     private func setupPackages() {
+        setupStickerPackages()
+        setupGifPackages()
+    }
+    
+    private func setupStickerPackages() {
         let collections = [
             Colors.allColorsCollection.colors,
             Colors.redCollection.colors,
@@ -66,6 +71,19 @@ class StickerManager {
             packages.append(package)
         }
     }
+    
+    private func setupGifPackages() {
+        let thumbnail = Renderer.generateRandomImage(size: CGSize(width: 3, height: 3))
+        let stickers = [
+            UIImage.gif(name: "ColorPickerGIF"),
+        ]
+        
+        let gifPackage1 = StickerPackage(thumbnail: thumbnail ?? UIImage(), stickers: stickers as! [UIImage] , name: "GIFs")
+        
+        
+        packages.append(gifPackage1)
+    }
+    
 }
 
 class StickerPackage {
